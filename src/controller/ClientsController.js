@@ -55,6 +55,11 @@ const getUserJuridical = async (req, res) => {
 
 module.exports = {
   getUsers,
+  //pessoas fisicas
   getUsersPhysical,
+  getUserPhysical,
+
+  //pessoas juridicas
   getUsersJuridical,
+  getUserJuridical,
 };

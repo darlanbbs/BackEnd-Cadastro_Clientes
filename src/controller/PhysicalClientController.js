@@ -71,7 +71,7 @@ const getUserPhysical = async (req, res) => {
 
 const createUserPhysical = async (req, res) => {
   const { nome, endereco, telefone, email, cpf, rg, documento_path } = req.body;
-  const emailExists = await emailExistsInPessoasFisicas(email);
+  const emailExists = await emailExistsInPessoasJuridicas(email);
   if (emailExists) {
     return res.status(400).json({ mensagem: "Email em uso" });
   }
@@ -88,7 +88,7 @@ const createUserPhysical = async (req, res) => {
 
 const updateUserPhysical = async (req, res) => {
   const { nome, endereco, telefone, email, cpf, rg, documento_path } = req.body;
-  const emailExists = await emailExistsInPessoasFisicas(email);
+  const emailExists = await emailExistsInPessoasJuridicas(email);
   if (emailExists) {
     return res.status(400).json({ mensagem: "Email em uso" });
   }

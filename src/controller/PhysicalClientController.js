@@ -44,6 +44,48 @@ const getUsers = async (req, res) => {
   }
 };
 
+const searchUser = async (req, res) => {
+  const { nome } = req.query;
+
+  try {
+    const { rows } = await pool.query(
+      `
+      SELECT 
+    id,
+    nome AS nome_ou_nome_empresa,
+    endereco,
+    telefone,
+    email,
+    cpf AS documento,
+    rg AS documento_adicional,
+    documento_path AS caminho_documento,
+    data
+FROM pessoas_fisicas
+WHERE nome ILIKE '%${nome}%' 
+
+UNION ALL
+
+SELECT 
+    id,
+    nome_empresa AS nome_ou_nome_empresa,
+    endereco,
+    telefone,
+    email,
+    cnpj AS documento,
+    NULL AS documento_adicional,
+    contrato_social_path AS caminho_documento,
+    data
+FROM pessoas_juridicas
+WHERE nome_empresa ILIKE '%${nome}%';
+
+      `
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
 const getUsersPhysical = async (req, res) => {
   try {
     const { rows } = await pool.query("select * from pessoas_fisicas");
@@ -117,6 +159,7 @@ const deleteUserPhysical = async (req, res) => {
 
 module.exports = {
   getUsers,
+  searchUser,
   //pessoas fisicas
   getUsersPhysical,
   getUserPhysical,

@@ -6,6 +6,7 @@ const {
   getUsers,
   updateUserPhysical,
   deleteUserPhysical,
+  searchUser,
 } = require("../controller/PhysicalClientController");
 const {
   verifyParams,
@@ -16,6 +17,7 @@ const PhysicalRoute = express();
 
 // todos os clientes
 PhysicalRoute.get("/clients", getUsers);
+PhysicalRoute.get("/search", searchUser);
 
 //pessoas fisicas
 PhysicalRoute.get("/clients/physical", getUsersPhysical);

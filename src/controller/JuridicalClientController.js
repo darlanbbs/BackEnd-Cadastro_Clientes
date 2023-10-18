@@ -25,12 +25,18 @@ const getUserJuridical = async (req, res) => {
 };
 
 const createUserJuridical = async (req, res) => {
-  const { nome, endereco, telefone, email, cnpj, contrato_social_path } =
-    req.body;
+  const {
+    nome_empresa,
+    endereco,
+    telefone,
+    email,
+    cnpj,
+    contrato_social_path,
+  } = req.body;
   try {
     const { rows } = await pool.query(
-      "insert into pessoas_juridicas (nome,endereco,telefone,email,cnpj,contrato_social_path) values ($1,$2,$3,$4,$5,$6)",
-      [nome, endereco, telefone, email, cnpj, contrato_social_path]
+      "insert into pessoas_juridicas (nome_empresa,endereco,telefone,email,cnpj,contrato_social_path) values ($1,$2,$3,$4,$5,$6)",
+      [nome_empresa, endereco, telefone, email, cnpj, contrato_social_path]
     );
     res.status(200).json({ mensagem: "Pessoa juridica criada com sucesso" });
   } catch (error) {
@@ -39,17 +45,31 @@ const createUserJuridical = async (req, res) => {
 };
 
 const updateUserJuridical = async (req, res) => {
-  const { nome, endereco, telefone, email, cnpj, contrato_social_path } =
-    req.body;
+  const {
+    nome_empresa,
+    endereco,
+    telefone,
+    email,
+    cnpj,
+    contrato_social_path,
+  } = req.body;
 
   try {
     const { rows } = await pool.query(
-      "update pessoas_juridicas set nome $1, endereco $2, telefone $3, email $4, cnpj $5, contrato_social_path $6 where id = $7",
-      [nome, endereco, email, cnpj, contrato_social_path, req.params.id]
+      "UPDATE pessoas_juridicas SET nome_empresa = $1, endereco = $2, telefone = $3, email = $4, cnpj = $5, contrato_social_path = $6 WHERE id = $7",
+      [
+        nome_empresa,
+        endereco,
+        telefone,
+        email,
+        cnpj,
+        contrato_social_path,
+        req.params.id,
+      ]
     );
     res
       .status(200)
-      .json({ mensagem: "Pessoa juridica atualizada com sucesso" });
+      .json({ mensagem: "Pessoa jurídica atualizada com sucesso" });
   } catch (error) {
     return res.status(500).json(error.message);
   }

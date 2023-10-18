@@ -3,7 +3,32 @@ const pool = require("../config/db");
 const getUsers = async (req, res) => {
   try {
     const { rows } = await pool.query(
-      "select * from pessoas_fisicas,pessoas_juridicas"
+      `SELECT 
+      id,
+      nome AS nome_ou_nome_empresa,
+      endereco,
+      telefone,
+      email,
+      cpf AS documento,
+      rg AS documento_adicional,
+      documento_path AS caminho_documento,
+      data
+  FROM pessoas_fisicas
+  
+  UNION ALL
+  
+  SELECT 
+      id,
+      nome_empresa AS nome_ou_nome_empresa,
+      endereco,
+      telefone,
+      email,
+      cnpj AS documento,
+      NULL AS documento_adicional,
+      contrato_social_path AS caminho_documento,
+      data
+  FROM pessoas_juridicas;
+  `
     );
     res.status(200).json(rows);
   } catch (error) {
@@ -73,6 +98,20 @@ const createUserPhysical = async (req, res) => {
   }
 };
 
+const createUserJuridical = async (req, res) => {
+  const { nome, endereco, telefone, email, cnpj, contrato_social_path } =
+    req.body;
+  try {
+    const { rows } = await pool.query(
+      "insert into pessoas_juridicas (nome,endereco,telefone,email,cnpj,contrato_social_path) values ($1,$2,$3,$4,$5,$6)",
+      [nome, endereco, telefone, email, cnpj, contrato_social_path]
+    );
+    res.status(200).json({ mensagem: "Pessoa juridica criada com sucesso" });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   getUsers,
   //pessoas fisicas
@@ -83,4 +122,5 @@ module.exports = {
   //pessoas juridicas
   getUsersJuridical,
   getUserJuridical,
+  createUserJuridical,
 };

@@ -7,6 +7,10 @@ const {
   updateUserPhysical,
   deleteUserPhysical,
 } = require("../controller/PhysicalClientController");
+const {
+  verifyParams,
+  verifyBodyPhysical,
+} = require("../middleware/Middleware");
 
 const PhysicalRoute = express();
 
@@ -15,8 +19,13 @@ PhysicalRoute.get("/clients", getUsers);
 
 //pessoas fisicas
 PhysicalRoute.get("/clients/physical", getUsersPhysical);
-PhysicalRoute.get("/clients/physical/:id", getUserPhysical);
-PhysicalRoute.post("/clients/physical", createUserPhysical);
-PhysicalRoute.put("/clients/physical/:id", updateUserPhysical);
-PhysicalRoute.delete("/clients/physical/:id", deleteUserPhysical);
+PhysicalRoute.get("/clients/physical/:id", verifyParams, getUserPhysical);
+PhysicalRoute.post("/clients/physical", verifyBodyPhysical, createUserPhysical);
+PhysicalRoute.put(
+  "/clients/physical/:id",
+  verifyParams,
+  verifyBodyPhysical,
+  updateUserPhysical
+);
+PhysicalRoute.delete("/clients/physical/:id", verifyParams, deleteUserPhysical);
 module.exports = PhysicalRoute;

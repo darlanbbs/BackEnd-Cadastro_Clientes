@@ -72,4 +72,6 @@ module.exports = {
   getUsersJuridical,
   getUserJuridical,
   createUserJuridical,
+  updateUserJuridical,
+  deleteUserJuridical,
 };

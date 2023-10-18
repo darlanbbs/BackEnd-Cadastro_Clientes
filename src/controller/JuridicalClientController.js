@@ -1,5 +1,13 @@
 const pool = require("../config/db");
 
+const emailExistsInPessoasFisicas = async (email) => {
+  const { rows } = await pool.query(
+    "SELECT COUNT(*) FROM pessoas_fisicas WHERE email = $1",
+    [email]
+  );
+  return parseInt(rows[0].count) > 0;
+};
+
 const getUsersJuridical = async (req, res) => {
   try {
     const { rows } = await pool.query("select * from pessoas_juridicas");
@@ -34,6 +42,11 @@ const createUserJuridical = async (req, res) => {
     contrato_social_path,
   } = req.body;
   try {
+    const emailExists = await emailExistsInPessoasFisicas(email);
+
+    if (emailExists) {
+      return res.status(400).json({ mensagem: "Email em uso" });
+    }
     const { rows } = await pool.query(
       "insert into pessoas_juridicas (nome_empresa,endereco,telefone,email,cnpj,contrato_social_path) values ($1,$2,$3,$4,$5,$6)",
       [nome_empresa, endereco, telefone, email, cnpj, contrato_social_path]
@@ -53,6 +66,11 @@ const updateUserJuridical = async (req, res) => {
     cnpj,
     contrato_social_path,
   } = req.body;
+
+  const emailExists = await emailExistsInPessoasFisicas(email);
+  if (emailExists) {
+    return res.status(400).json({ mensagem: "Email em uso" });
+  }
 
   try {
     const { rows } = await pool.query(

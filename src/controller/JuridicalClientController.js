@@ -38,6 +38,35 @@ const createUserJuridical = async (req, res) => {
   }
 };
 
+const updateUserJuridical = async (req, res) => {
+  const { nome, endereco, telefone, email, cnpj, contrato_social_path } =
+    req.body;
+
+  try {
+    const { rows } = await pool.query(
+      "update pessoas_juridicas set nome $1, endereco $2, telefone $3, email $4, cnpj $5, contrato_social_path $6 where id = $7",
+      [nome, endereco, email, cnpj, contrato_social_path, req.params.id]
+    );
+    res
+      .status(200)
+      .json({ mensagem: "Pessoa juridica atualizada com sucesso" });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+const deleteUserJuridical = async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "delete from pessoas_juridicas where id = $1",
+      [req.params.id]
+    );
+    res.status(200).json({ mensagem: "Pessoa fisica excluída com sucesso" });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   //pessoas juridicas
   getUsersJuridical,

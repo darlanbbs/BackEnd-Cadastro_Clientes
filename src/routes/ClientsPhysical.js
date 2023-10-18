@@ -5,6 +5,7 @@ const {
   createUserPhysical,
   getUsers,
   updateUserPhysical,
+  deleteUserPhysical,
 } = require("../controller/PhysicalClientController");
 
 const PhysicalRoute = express();
@@ -17,5 +18,5 @@ PhysicalRoute.get("/clients/physical", getUsersPhysical);
 PhysicalRoute.get("/clients/physical/:id", getUserPhysical);
 PhysicalRoute.post("/clients/physical", createUserPhysical);
 PhysicalRoute.put("/clients/physical/:id", updateUserPhysical);
-
+PhysicalRoute.delete("/clients/physical/:id", deleteUserPhysical);
 module.exports = PhysicalRoute;

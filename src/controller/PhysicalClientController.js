@@ -87,6 +87,18 @@ const updateUserPhysical = async (req, res) => {
   }
 };
 
+const deleteUserPhysical = async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "delete from pessoas_fisicas where id = $1",
+      [req.params.id]
+    );
+    res.status(200).json({ mensagem: "Pessoa fisica excluída com sucesso" });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   getUsers,
   //pessoas fisicas
@@ -94,4 +106,5 @@ module.exports = {
   getUserPhysical,
   createUserPhysical,
   updateUserPhysical,
+  deleteUserPhysical,
 };

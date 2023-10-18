@@ -1,12 +1,14 @@
 const express = require("express");
-const route = require("./routes/ClientsRoutes");
 const cors = require("cors");
+const PhysicalRoute = require("./routes/ClientsPhysical");
+const JuridicalRoute = require("./routes/JuridicalPhysical");
 const app = express();
 require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
 
-app.use(route);
+app.use(PhysicalRoute);
+app.use(JuridicalRoute);
 
 app.listen(process.env.PORT_LISTEN);

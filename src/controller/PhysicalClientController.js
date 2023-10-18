@@ -45,15 +45,6 @@ const getUsersPhysical = async (req, res) => {
   }
 };
 
-const getUsersJuridical = async (req, res) => {
-  try {
-    const { rows } = await pool.query("select * from pessoas_juridicas");
-    res.status(200).json(rows);
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
-};
-
 const getUserPhysical = async (req, res) => {
   try {
     const { rows, rowCount } = await pool.query(
@@ -61,21 +52,6 @@ const getUserPhysical = async (req, res) => {
       [req.params.id]
     );
 
-    if (rowCount < 1) {
-      return res.status(404).json({ mensagem: "Produto não encontrado" });
-    }
-    res.status(200).json(rows);
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
-};
-
-const getUserJuridical = async (req, res) => {
-  try {
-    const { rows, rowCount } = await pool.query(
-      "select * from pessoas_juridicas where id = $1",
-      [req.params.id]
-    );
     if (rowCount < 1) {
       return res.status(404).json({ mensagem: "Produto não encontrado" });
     }
@@ -98,15 +74,14 @@ const createUserPhysical = async (req, res) => {
   }
 };
 
-const createUserJuridical = async (req, res) => {
-  const { nome, endereco, telefone, email, cnpj, contrato_social_path } =
-    req.body;
+const updateUserPhysical = async (req, res) => {
+  const { nome, endereco, telefone, email, cpf, rg, documento_path } = req.body;
   try {
     const { rows } = await pool.query(
-      "insert into pessoas_juridicas (nome,endereco,telefone,email,cnpj,contrato_social_path) values ($1,$2,$3,$4,$5,$6)",
-      [nome, endereco, telefone, email, cnpj, contrato_social_path]
+      "update pessoas_fisicas set nome = $1,endereco = $2,telefone = $3,email = $4, cpf = $5,rg = $6, documento_path = $7 where id = $8",
+      [nome, endereco, telefone, email, cpf, rg, documento_path, req.params.id]
     );
-    res.status(200).json({ mensagem: "Pessoa juridica criada com sucesso" });
+    res.status(200).json({ mensagem: "Pessoa fisica atualizada com sucesso" });
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -118,9 +93,4 @@ module.exports = {
   getUsersPhysical,
   getUserPhysical,
   createUserPhysical,
-
-  //pessoas juridicas
-  getUsersJuridical,
-  getUserJuridical,
-  createUserJuridical,
 };

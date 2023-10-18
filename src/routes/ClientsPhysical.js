@@ -3,6 +3,7 @@ const {
   getUsersPhysical,
   getUserPhysical,
   createUserPhysical,
+  getUsers,
 } = require("../controller/PhysicalClientController");
 
 const PhysicalRoute = express();

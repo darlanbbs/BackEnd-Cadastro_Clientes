@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const PhysicalRoute = require("./routes/ClientsPhysical");
-const JuridicalRoute = require("./routes/JuridicalPhysical");
+const JuridicalRoute = require("./routes/ClientJuridical");
 const app = express();
 require("dotenv").config();
 

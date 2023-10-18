@@ -93,4 +93,5 @@ module.exports = {
   getUsersPhysical,
   getUserPhysical,
   createUserPhysical,
+  updateUserPhysical,
 };

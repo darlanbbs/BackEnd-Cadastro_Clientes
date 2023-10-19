@@ -12,36 +12,33 @@ const getUsers = async (req, res) => {
   try {
     const { rows } = await pool.query(
       `SELECT 
-      id,
-      nome AS nome_ou_nome_empresa,
-      endereco,
-      telefone,
-      email,
-      cpf AS documento,
-      rg AS documento_adicional,
-      data
-  FROM pessoas_fisicas
-  
-  UNION ALL
-  
-  SELECT 
-      id,
-      nome_empresa AS nome_ou_nome_empresa,
-      endereco,
-      telefone,
-      email,
-      cnpj AS documento,
-      NULL AS documento_adicional,
-      contrato_social_path AS caminho_documento,
-      data
-  FROM pessoas_juridicas;
-  `
+        id,
+        nome AS nome_ou_nome_empresa,
+        endereco,
+        telefone,
+        email,
+        cpf AS documento,
+        rg AS documento_adicional
+      FROM pessoas_fisicas
+
+      UNION ALL
+
+      SELECT 
+        id,
+        nome_empresa AS nome_ou_nome_empresa,
+        endereco,
+        telefone,
+        email,
+        cnpj AS documento,
+        NULL AS documento_adicional
+      FROM pessoas_juridicas`
     );
     res.status(200).json(rows);
   } catch (error) {
     return res.status(500).json(error.message);
   }
 };
+
 
 const searchUser = async (req, res) => {
   const { nome } = req.query;

@@ -19,7 +19,6 @@ const getUsers = async (req, res) => {
       email,
       cpf AS documento,
       rg AS documento_adicional,
-      documento_path AS caminho_documento,
       data
   FROM pessoas_fisicas
   
@@ -58,7 +57,7 @@ const searchUser = async (req, res) => {
     email,
     cpf AS documento,
     rg AS documento_adicional,
-    documento_path AS caminho_documento,
+    
     data
 FROM pessoas_fisicas
 WHERE nome ILIKE '%${nome}%' 
@@ -112,15 +111,16 @@ const getUserPhysical = async (req, res) => {
 };
 
 const createUserPhysical = async (req, res) => {
-  const { nome, endereco, telefone, email, cpf, rg, documento_path } = req.body;
+  const { nome, endereco, telefone, email, cpf, rg } = req.body;
   const emailExists = await emailExistsInPessoasJuridicas(email);
   if (emailExists) {
     return res.status(400).json({ mensagem: "Email em uso" });
   }
   try {
     const { rows } = await pool.query(
-      "insert into pessoas_fisicas (nome,endereco,telefone,email,cpf,rg,documento_path) values ($1,$2,$3,$4,$5,$6,$7)",
-      [nome, endereco, telefone, email, cpf, rg, documento_path]
+      "insert into pessoas_fisicas (nome,endereco,telefone,email,cpf,rg) values ($1,$2,$3,$4,$5,$6)",
+
+      [nome, endereco, telefone, email, cpf, rg]
     );
     res.status(200).json({ mensagem: "Pessoa fisica criada com sucesso" });
   } catch (error) {
@@ -129,15 +129,15 @@ const createUserPhysical = async (req, res) => {
 };
 
 const updateUserPhysical = async (req, res) => {
-  const { nome, endereco, telefone, email, cpf, rg, documento_path } = req.body;
+  const { nome, endereco, telefone, email, cpf, rg } = req.body;
   const emailExists = await emailExistsInPessoasJuridicas(email);
   if (emailExists) {
     return res.status(400).json({ mensagem: "Email em uso" });
   }
   try {
     const { rows } = await pool.query(
-      "update pessoas_fisicas set nome = $1,endereco = $2,telefone = $3,email = $4, cpf = $5,rg = $6, documento_path = $7 where id = $8",
-      [nome, endereco, telefone, email, cpf, rg, documento_path, req.params.id]
+      "update pessoas_fisicas set nome = $1,endereco = $2,telefone = $3,email = $4, cpf = $5,rg = $6 where id = $8",
+      [nome, endereco, telefone, email, cpf, rg, req.params.id]
     );
     res.status(200).json({ mensagem: "Pessoa fisica atualizada com sucesso" });
   } catch (error) {

@@ -9,7 +9,7 @@ const port = process.env.PORT;
 const database = process.env.DATABASE;
 
 const pool = new Pool({
-  user: "cadastro_clientes_user",
+  user: "cadastro_clientes_k3yy_user",
   host,
   database,
   password,

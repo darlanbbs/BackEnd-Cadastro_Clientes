@@ -46,32 +46,32 @@ const searchUser = async (req, res) => {
   try {
     const { rows } = await pool.query(
       `
-      SELECT 
+
+    SELECT 
     id,
-    nome AS nome_ou_nome_empresa,
-    endereco,
-    telefone,
-    email,
-    cpf AS documento,
-    rg AS documento_adicional,
-    
-    data
-FROM pessoas_fisicas
+        nome AS nome_ou_nome_empresa,
+        endereco,
+        telefone,
+        email,
+        cpf AS documento,
+        rg AS documento_adicional
+      FROM pessoas_fisicas
+
 WHERE nome ILIKE '%${nome}%' 
 
 UNION ALL
 
 SELECT 
-    id,
-    nome_empresa AS nome_ou_nome_empresa,
-    endereco,
-    telefone,
-    email,
-    cnpj AS documento,
-    NULL AS documento_adicional,
-    contrato_social_path AS caminho_documento,
-    data
-FROM pessoas_juridicas
+   id,
+        nome_empresa AS nome_ou_nome_empresa,
+        endereco,
+        telefone,
+        email,
+        cnpj AS documento,
+        NULL AS documento_adicional
+      FROM pessoas_juridicas
+ 
+
 WHERE nome_empresa ILIKE '%${nome}%';
 
       `

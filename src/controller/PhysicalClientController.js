@@ -178,10 +178,43 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    // Consulta para buscar na tabela pessoas_fisicas
+    const queryPessoaFisica = `
+      SELECT * FROM pessoas_fisicas WHERE email = $1
+    `;
+
+    // Consulta para buscar na tabela pessoas_juridicas
+    const queryPessoaJuridica = `
+      SELECT * FROM pessoas_juridicas WHERE email = $1
+    `;
+
+    // Executando as consultas
+    const resultPessoaFisica = await pool.query(queryPessoaFisica, [email]);
+    const resultPessoaJuridica = await pool.query(queryPessoaJuridica, [email]);
+
+    // Verificando se encontrou resultados em alguma das tabelas
+    if (resultPessoaFisica.rows.length > 0) {
+      res.status(200).json({ tipo: 'fisica', data: resultPessoaFisica.rows });
+    } else if (resultPessoaJuridica.rows.length > 0) {
+      res.status(200).json({ tipo: 'juridica', data: resultPessoaJuridica.rows });
+    } else {
+      res.status(404).json({ mensagem: 'Usuário não encontrado' });
+    }
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+
 module.exports = {
   getUsers,
   searchUser,
   deleteUser,
+  getUserByEmail,
   //pessoas fisicas
   getUsersPhysical,
   getUserPhysical,

@@ -5,7 +5,7 @@ const {
   createUserPhysical,
   getUsers,
   updateUserPhysical,
-  deleteUserPhysical,
+  deleteUser,
   searchUser,
 } = require("../controller/PhysicalClientController");
 const {
@@ -18,6 +18,7 @@ const PhysicalRoute = express();
 // todos os clientes
 PhysicalRoute.get("/clients", getUsers);
 PhysicalRoute.get("/search", searchUser);
+PhysicalRoute.delete("/clients/:email", deleteUser);
 
 //pessoas fisicas
 PhysicalRoute.get("/clients/physical", getUsersPhysical);

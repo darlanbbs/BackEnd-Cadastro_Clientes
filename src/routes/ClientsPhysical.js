@@ -30,5 +30,5 @@ PhysicalRoute.put(
   verifyBodyPhysical,
   updateUserPhysical
 );
-PhysicalRoute.delete("/clients/physical/:id", verifyParams, deleteUserPhysical);
+
 module.exports = PhysicalRoute;

@@ -93,17 +93,7 @@ const updateUserJuridical = async (req, res) => {
   }
 };
 
-const deleteUserJuridical = async (req, res) => {
-  try {
-    const { rows } = await pool.query(
-      "delete from pessoas_juridicas where id = $1",
-      [req.params.id]
-    );
-    res.status(200).json({ mensagem: "Pessoa fisica excluída com sucesso" });
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
-};
+
 
 module.exports = {
   //pessoas juridicas
@@ -111,5 +101,4 @@ module.exports = {
   getUserJuridical,
   createUserJuridical,
   updateUserJuridical,
-  deleteUserJuridical,
 };

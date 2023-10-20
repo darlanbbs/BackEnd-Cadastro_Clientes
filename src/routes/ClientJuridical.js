@@ -3,7 +3,6 @@ const {
   getUsersJuridical,
   getUserJuridical,
   updateUserJuridical,
-  deleteUserJuridical,
   createUserJuridical,
 } = require("../controller/JuridicalClientController");
 const {
@@ -26,10 +25,5 @@ JuridicalRoute.put(
   verifyParams,
   verifyBodyJuridical,
   updateUserJuridical
-);
-JuridicalRoute.delete(
-  "/clients/juridical/:id",
-  verifyParams,
-  deleteUserJuridical
 );
 module.exports = JuridicalRoute;

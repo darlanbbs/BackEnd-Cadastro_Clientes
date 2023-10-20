@@ -3,6 +3,7 @@ const {
   getUsersPhysical,
   getUserPhysical,
   createUserPhysical,
+  getUserByEmail,
   getUsers,
   updateUserPhysical,
   deleteUser,
@@ -19,6 +20,7 @@ const PhysicalRoute = express();
 PhysicalRoute.get("/clients", getUsers);
 PhysicalRoute.get("/search", searchUser);
 PhysicalRoute.delete("/clients/:email", deleteUser);
+PhysicalRoute.get("/perfil/:email",getUserByEmail );
 
 //pessoas fisicas
 PhysicalRoute.get("/clients/physical", getUsersPhysical);

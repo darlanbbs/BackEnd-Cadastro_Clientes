@@ -142,13 +142,37 @@ const updateUserPhysical = async (req, res) => {
   }
 };
 
-const deleteUserPhysical = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
-    const { rows } = await pool.query(
-      "delete from pessoas_fisicas where id = $1",
-      [req.params.id]
+    const { email } = req.params;
+
+    const juridicalResult = await pool.query(
+      "SELECT * FROM pessoas_juridicas WHERE email = $1",
+      [email]
     );
-    res.status(200).json({ mensagem: "Pessoa fisica excluída com sucesso" });
+
+    if (juridicalResult.rows.length > 0) {
+      await pool.query("DELETE FROM pessoas_juridicas WHERE email = $1", [
+        email,
+      ]);
+      return res
+        .status(200)
+        .json({ mensagem: "Pessoa jurídica excluída com sucesso" });
+    }
+
+    const physicalResult = await pool.query(
+      "SELECT * FROM pessoas_fisicas WHERE email = $1",
+      [email]
+    );
+
+    if (physicalResult.rows.length > 0) {
+      await pool.query("DELETE FROM pessoas_fisicas WHERE email = $1", [email]);
+      return res
+        .status(200)
+        .json({ mensagem: "Pessoa física excluída com sucesso" });
+    }
+
+    return res.status(404).json({ mensagem: "Usuário não encontrado" });
   } catch (error) {
     return res.status(500).json(error.message);
   }
@@ -157,10 +181,10 @@ const deleteUserPhysical = async (req, res) => {
 module.exports = {
   getUsers,
   searchUser,
+  deleteUser,
   //pessoas fisicas
   getUsersPhysical,
   getUserPhysical,
   createUserPhysical,
   updateUserPhysical,
-  deleteUserPhysical,
 };

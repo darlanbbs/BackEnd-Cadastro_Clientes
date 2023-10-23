@@ -4,6 +4,8 @@
 Backend da Aplicação de Cadastro de Pessoas (Físicas e Jurídicas)
 Este é o repositório do backend da aplicação de cadastro de pessoas, desenvolvida em Node.js e utilizando Express.js para o gerenciamento das rotas, e PostgreSQL como banco de dados.
 
+Obs:O FrontEnd da aplicação está aqui(https://github.com/darlanbbs/cadastro_cliente_mobile)
+
 # Tecnologias Utilizadas
 
 - Node.js
